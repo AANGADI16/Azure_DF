@@ -66,7 +66,7 @@
 					"url": "https://prod-21.northcentralus.logic.azure.com:443/workflows/5fdf1a0df7a64d91bea07335227c855c/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=4ldSnXzD1U7rVg2_06QHgWOWSaf9fAb4FxzN8j6elrg",
 					"method": "POST",
 					"body": {
-						"value": "{\n\t\"title\":\"Pipeline Run Failed\",\n\t\"message\":\"@{activity('Execute Pipeline1').error.message}\",\n\t\"color\":\"RED\",\n\t\"dataFactoryName\":\"@{pipeline().DataFactory}\",\n\t\"pipelineName\":\"@{pipeline().Pipeline}\",\n\t\"pipelineRunId\":\"@{pipeline().RunId}\",\n\t\"time\": \"@{utcnow()}\"\n}",
+						"value": "{\n\t\"title\":\"Pipeline Run Failed\",\n\t\"message\":\"@{activity('Execute Pipeline Childpipeline1').output.error.message}\",\n\t\"color\":\"RED\",\n\t\"dataFactoryName\":\"@{pipeline().DataFactory}\",\n\t\"pipelineName\":\"@{pipeline().Pipeline}\",\n\t\"pipelineRunId\":\"@{pipeline().RunId}\",\n\t\"time\": \"@{utcnow()}\"\n}",
 						"type": "Expression"
 					}
 				}
