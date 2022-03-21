@@ -1,0 +1,39 @@
+{
+	"name": "copyfilefromlocal",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "lscopyfilefromlocal",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "FileServerLocation"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "Model",
+				"type": "String"
+			},
+			{
+				"name": "Option_Code",
+				"type": "String"
+			},
+			{
+				"name": "Option_Desc",
+				"type": "String"
+			},
+			{
+				"name": "Material_Cost",
+				"type": "String"
+			}
+		]
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

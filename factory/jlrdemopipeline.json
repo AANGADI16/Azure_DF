@@ -1,0 +1,9 @@
+{
+	"name": "jlrdemopipeline",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "6db11dbf-c7ef-45c9-8b72-05b40e123e07",
+		"tenantId": "42373260-53a2-41e9-993b-485464027e83"
+	}
+}

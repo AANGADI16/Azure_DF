@@ -1,0 +1,24 @@
+{
+	"name": "adlsgen2container",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1ls",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "inputds",
+				"fileSystem": "inputds"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

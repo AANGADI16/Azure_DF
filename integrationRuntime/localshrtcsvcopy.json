@@ -1,0 +1,6 @@
+{
+	"name": "localshrtcsvcopy",
+	"properties": {
+		"type": "SelfHosted"
+	}
+}
