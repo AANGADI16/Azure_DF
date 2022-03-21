@@ -93,7 +93,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"expression": {
-									"value": "@contains(item(),activity('Sink_Meta').output)",
+									"value": "@contains(activity('Sink_Meta').output.childItems,item())",
 									"type": "Expression"
 								},
 								"ifFalseActivities": [
