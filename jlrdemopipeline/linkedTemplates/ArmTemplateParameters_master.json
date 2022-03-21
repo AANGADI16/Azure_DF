@@ -1,0 +1,33 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "jlrdemopipeline"
+		},
+		"AzureDataLakeStorage1ls_accountKey": {
+			"value": ""
+		},
+		"Databrickslsjlr_accessToken": {
+			"value": ""
+		},
+		"lscopyfilefromlocal_password": {
+			"value": ""
+		},
+		"AzureDataLakeStorage1ls_properties_typeProperties_url": {
+			"value": "https://datasourcejlr.dfs.core.windows.net"
+		},
+		"lscopyfilefromlocal_properties_typeProperties_host": {
+			"value": "C:\\Users\\dellpc\\Desktop\\JLR\\Raw_data"
+		},
+		"lscopyfilefromlocal_properties_typeProperties_userId": {
+			"value": "Abhishek"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}
