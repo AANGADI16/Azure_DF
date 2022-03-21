@@ -257,7 +257,7 @@
 						"type": "DatabricksNotebook",
 						"dependsOn": [
 							{
-								"activity": "Set variable2",
+								"activity": "OldFileCopyChildpipeline2",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -280,11 +280,22 @@
 						}
 					},
 					{
-						"name": "Execute Pipeline1",
+						"name": "OldFileCopyChildpipeline2",
 						"type": "ExecutePipeline",
-						"dependsOn": [],
+						"dependsOn": [
+							{
+								"activity": "Set variable2",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
 						"userProperties": [],
 						"typeProperties": {
+							"pipeline": {
+								"referenceName": "OldFileCopyChildpipeline2",
+								"type": "PipelineReference"
+							},
 							"waitOnCompletion": true,
 							"parameters": {}
 						}
@@ -308,175 +319,8 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/adlsgen2container')]",
 				"[concat(variables('factoryId'), '/datasets/copyfilefromlocal')]",
-				"[concat(variables('factoryId'), '/linkedServices/Databrickslsjlr')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/DirectCopy')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Get Metadata1",
-						"type": "GetMetadata",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "copyfilefromlocal",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"fieldList": [
-								"childItems"
-							],
-							"storeSettings": {
-								"type": "FileServerReadSettings",
-								"recursive": true,
-								"enablePartitionDiscovery": false
-							},
-							"formatSettings": {
-								"type": "DelimitedTextReadSettings"
-							}
-						}
-					},
-					{
-						"name": "ForEach1",
-						"type": "ForEach",
-						"dependsOn": [
-							{
-								"activity": "Get Metadata1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('Get Metadata1').output.childItems",
-								"type": "Expression"
-							},
-							"activities": [
-								{
-									"name": "Copy data1",
-									"type": "Copy",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "7.00:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"source": {
-											"type": "DelimitedTextSource",
-											"storeSettings": {
-												"type": "FileServerReadSettings",
-												"recursive": true,
-												"modifiedDatetimeEnd": {
-													"value": "@utcnow()",
-													"type": "Expression"
-												},
-												"wildcardFolderPath": "C:/Users/dellpc/Desktop/JLR/Raw_data",
-												"wildcardFileName": {
-													"value": "@item().name",
-													"type": "Expression"
-												},
-												"enablePartitionDiscovery": false
-											},
-											"formatSettings": {
-												"type": "DelimitedTextReadSettings"
-											}
-										},
-										"sink": {
-											"type": "DelimitedTextSink",
-											"storeSettings": {
-												"type": "AzureBlobFSWriteSettings"
-											},
-											"formatSettings": {
-												"type": "DelimitedTextWriteSettings",
-												"quoteAllText": true,
-												"fileExtension": ".txt"
-											}
-										},
-										"enableStaging": false,
-										"translator": {
-											"type": "TabularTranslator",
-											"typeConversion": true,
-											"typeConversionSettings": {
-												"allowDataTruncation": true,
-												"treatBooleanAsNumber": false
-											}
-										}
-									},
-									"inputs": [
-										{
-											"referenceName": "copyfilefromlocal",
-											"type": "DatasetReference",
-											"parameters": {}
-										}
-									],
-									"outputs": [
-										{
-											"referenceName": "adlsgen2container",
-											"type": "DatasetReference",
-											"parameters": {}
-										}
-									]
-								}
-							]
-						}
-					},
-					{
-						"name": "Notebook1",
-						"type": "DatabricksNotebook",
-						"dependsOn": [
-							{
-								"activity": "ForEach1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"notebookPath": "/Users/abhishekangadi16_gmail.com#ext#@abhishekangadi16gmail.onmicrosoft.com/jlrassignment"
-						},
-						"linkedServiceName": {
-							"referenceName": "Databrickslsjlr",
-							"type": "LinkedServiceReference"
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"annotations": [],
-				"lastPublishTime": "2022-03-20T15:02:13Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/copyfilefromlocal')]",
 				"[concat(variables('factoryId'), '/linkedServices/Databrickslsjlr')]",
-				"[concat(variables('factoryId'), '/datasets/adlsgen2container')]"
+				"[concat(variables('factoryId'), '/pipelines/OldFileCopyChildpipeline2')]"
 			]
 		},
 		{
@@ -974,103 +818,13 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/master')]",
+			"name": "[concat(parameters('factoryName'), '/ZaDirectCopy')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"activities": [
 					{
-						"name": "SendMail_Success",
-						"type": "WebActivity",
-						"dependsOn": [
-							{
-								"activity": "Execute Pipeline1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"url": "https://prod-21.northcentralus.logic.azure.com:443/workflows/5fdf1a0df7a64d91bea07335227c855c/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=4ldSnXzD1U7rVg2_06QHgWOWSaf9fAb4FxzN8j6elrg",
-							"method": "POST",
-							"headers": {},
-							"body": {
-								"value": "{\n\t\"title\":\"Pipeline Run Successfully\",\n\t\"message\":\"base_data enrich pipeline was successful\",\n\t\"color\":\"GREEN\",\n\t\"dataFactoryName\":\"@{pipeline().DataFactory}\",\n\t\"pipelineName\":\"@{pipeline().Pipeline}\",\n\t\"pipelineRunId\":\"@{pipeline().RunId}\",\n\t\"time\": \"@{utcnow()}\"\n}",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "Execute Pipeline1",
-						"type": "ExecutePipeline",
-						"dependsOn": [],
-						"userProperties": [],
-						"typeProperties": {
-							"pipeline": {
-								"referenceName": "ZChildpipeline_backup",
-								"type": "PipelineReference"
-							},
-							"waitOnCompletion": true,
-							"parameters": {}
-						}
-					},
-					{
-						"name": "SendMail_Failed",
-						"type": "WebActivity",
-						"dependsOn": [
-							{
-								"activity": "Execute Pipeline1",
-								"dependencyConditions": [
-									"Failed"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"url": "https://prod-21.northcentralus.logic.azure.com:443/workflows/5fdf1a0df7a64d91bea07335227c855c/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=4ldSnXzD1U7rVg2_06QHgWOWSaf9fAb4FxzN8j6elrg",
-							"method": "POST",
-							"headers": {},
-							"body": {
-								"value": "{\n\t\"title\":\"Pipeline Run Failed\",\n\t\"message\":\"@{activity('Execute Pipeline1').error.message}\",\n\t\"color\":\"RED\",\n\t\"dataFactoryName\":\"@{pipeline().DataFactory}\",\n\t\"pipelineName\":\"@{pipeline().Pipeline}\",\n\t\"pipelineRunId\":\"@{pipeline().RunId}\",\n\t\"time\": \"@{utcnow()}\"\n}",
-								"type": "Expression"
-							}
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {},
-					"cancelAfter": {}
-				},
-				"annotations": [],
-				"lastPublishTime": "2022-03-21T05:26:21Z"
-			},
-			"dependsOn": [
-				"[concat(variables('factoryId'), '/pipelines/ZChildpipeline_backup')]"
-			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/pipeline2_copy1')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "GetFileNamesSource",
+						"name": "Get Metadata1",
 						"type": "GetMetadata",
 						"dependsOn": [],
 						"policy": {
@@ -1101,132 +855,11 @@
 						}
 					},
 					{
-						"name": "GetFileNamesSink",
-						"type": "GetMetadata",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"dataset": {
-								"referenceName": "adlsgen2container",
-								"type": "DatasetReference",
-								"parameters": {}
-							},
-							"fieldList": [
-								"childItems"
-							],
-							"storeSettings": {
-								"type": "AzureBlobFSReadSettings",
-								"recursive": true,
-								"enablePartitionDiscovery": false
-							},
-							"formatSettings": {
-								"type": "DelimitedTextReadSettings"
-							}
-						}
-					},
-					{
-						"name": "CheckFileNamesAreSame",
-						"type": "Filter",
-						"dependsOn": [
-							{
-								"activity": "GetFileNamesSource",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							},
-							{
-								"activity": "GetFileNamesSink",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"items": {
-								"value": "@activity('GetFileNamesSource').outputactivity('Get Metadata1').output.childItems",
-								"type": "Expression"
-							},
-							"condition": {
-								"value": "@equals(activity('GetFileNamesSource').output.childItems,activity('GetFileNamesSink').output.childItems)",
-								"type": "Expression"
-							}
-						}
-					},
-					{
-						"name": "If Condition1",
-						"type": "IfCondition",
-						"dependsOn": [
-							{
-								"activity": "CheckFileNamesAreSame",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"expression": {
-								"value": "@empty(activity('CheckFileNamesAreSame').output.Value)",
-								"type": "Expression"
-							},
-							"ifTrueActivities": [
-								{
-									"name": "FIleNames",
-									"type": "SetVariable",
-									"dependsOn": [],
-									"userProperties": [],
-									"typeProperties": {
-										"variableName": "FileList",
-										"value": {
-											"value": "@activity('GetFileNamesSource').output.childItems",
-											"type": "Expression"
-										}
-									}
-								}
-							]
-						}
-					},
-					{
-						"name": "Notebook1",
-						"type": "DatabricksNotebook",
-						"dependsOn": [
-							{
-								"activity": "ForEach1",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"policy": {
-							"timeout": "7.00:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"notebookPath": "/Users/abhishekangadi16_gmail.com#ext#@abhishekangadi16gmail.onmicrosoft.com/jlrassignment"
-						},
-						"linkedServiceName": {
-							"referenceName": "Databrickslsjlr",
-							"type": "LinkedServiceReference"
-						}
-					},
-					{
 						"name": "ForEach1",
 						"type": "ForEach",
 						"dependsOn": [
 							{
-								"activity": "If Condition1",
+								"activity": "Get Metadata1",
 								"dependencyConditions": [
 									"Succeeded"
 								]
@@ -1235,7 +868,7 @@
 						"userProperties": [],
 						"typeProperties": {
 							"items": {
-								"value": "@variables('FileList')",
+								"value": "@activity('Get Metadata1').output.childItems",
 								"type": "Expression"
 							},
 							"activities": [
@@ -1257,6 +890,10 @@
 											"storeSettings": {
 												"type": "FileServerReadSettings",
 												"recursive": true,
+												"modifiedDatetimeEnd": {
+													"value": "@utcnow()",
+													"type": "Expression"
+												},
 												"wildcardFolderPath": "C:/Users/dellpc/Desktop/JLR/Raw_data",
 												"wildcardFileName": {
 													"value": "@item().name",
@@ -1306,24 +943,136 @@
 								}
 							]
 						}
+					},
+					{
+						"name": "Notebook1",
+						"type": "DatabricksNotebook",
+						"dependsOn": [
+							{
+								"activity": "ForEach1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"notebookPath": "/Users/abhishekangadi16_gmail.com#ext#@abhishekangadi16gmail.onmicrosoft.com/jlrassignment"
+						},
+						"linkedServiceName": {
+							"referenceName": "Databrickslsjlr",
+							"type": "LinkedServiceReference"
+						}
 					}
 				],
 				"policy": {
 					"elapsedTimeMetric": {},
 					"cancelAfter": {}
 				},
-				"variables": {
-					"FileList": {
-						"type": "Array"
-					}
-				},
 				"annotations": [],
 				"lastPublishTime": "2022-03-20T15:02:13Z"
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/datasets/copyfilefromlocal')]",
-				"[concat(variables('factoryId'), '/datasets/adlsgen2container')]",
-				"[concat(variables('factoryId'), '/linkedServices/Databrickslsjlr')]"
+				"[concat(variables('factoryId'), '/linkedServices/Databrickslsjlr')]",
+				"[concat(variables('factoryId'), '/datasets/adlsgen2container')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/master')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "SendMail_Success",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Execute Pipeline Childpipeline1",
+								"dependencyConditions": [
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://prod-21.northcentralus.logic.azure.com:443/workflows/5fdf1a0df7a64d91bea07335227c855c/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=4ldSnXzD1U7rVg2_06QHgWOWSaf9fAb4FxzN8j6elrg",
+							"method": "POST",
+							"headers": {},
+							"body": {
+								"value": "{\n\t\"title\":\"Pipeline Run Successfully\",\n\t\"message\":\"base_data enrich pipeline was successful\",\n\t\"color\":\"GREEN\",\n\t\"dataFactoryName\":\"@{pipeline().DataFactory}\",\n\t\"pipelineName\":\"@{pipeline().Pipeline}\",\n\t\"pipelineRunId\":\"@{pipeline().RunId}\",\n\t\"time\": \"@{utcnow()}\"\n}",
+								"type": "Expression"
+							}
+						}
+					},
+					{
+						"name": "Execute Pipeline Childpipeline1",
+						"type": "ExecutePipeline",
+						"dependsOn": [],
+						"userProperties": [],
+						"typeProperties": {
+							"pipeline": {
+								"referenceName": "Childpipeline1",
+								"type": "PipelineReference"
+							},
+							"waitOnCompletion": true,
+							"parameters": {}
+						}
+					},
+					{
+						"name": "SendMail_Failed",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Execute Pipeline Childpipeline1",
+								"dependencyConditions": [
+									"Failed"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "7.00:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"url": "https://prod-21.northcentralus.logic.azure.com:443/workflows/5fdf1a0df7a64d91bea07335227c855c/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=4ldSnXzD1U7rVg2_06QHgWOWSaf9fAb4FxzN8j6elrg",
+							"method": "POST",
+							"headers": {},
+							"body": {
+								"value": "{\n\t\"title\":\"Pipeline Run Failed\",\n\t\"message\":\"@{activity('Execute Pipeline Childpipeline1').output.error.message}\",\n\t\"color\":\"RED\",\n\t\"dataFactoryName\":\"@{pipeline().DataFactory}\",\n\t\"pipelineName\":\"@{pipeline().Pipeline}\",\n\t\"pipelineRunId\":\"@{pipeline().RunId}\",\n\t\"time\": \"@{utcnow()}\"\n}",
+								"type": "Expression"
+							}
+						}
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {},
+					"cancelAfter": {}
+				},
+				"annotations": [],
+				"lastPublishTime": "2022-03-21T05:26:21Z"
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/Childpipeline1')]"
 			]
 		},
 		{
