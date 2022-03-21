@@ -37,7 +37,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "Childpipeline",
+						"referenceName": "ZChildpipeline_backup",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
