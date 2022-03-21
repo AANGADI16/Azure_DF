@@ -147,6 +147,7 @@
 								"type": "Expression"
 							},
 							"wildcardFolderPath": "C:/Users/dellpc/Desktop/JLR/Raw_data",
+							"wildcardFileName": "*",
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
