@@ -7,7 +7,7 @@
 				"type": "WebActivity",
 				"dependsOn": [
 					{
-						"activity": "Execute Pipeline1",
+						"activity": "Execute Pipeline Childpipeline1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -31,13 +31,13 @@
 				}
 			},
 			{
-				"name": "Execute Pipeline1",
+				"name": "Execute Pipeline Childpipeline1",
 				"type": "ExecutePipeline",
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
 					"pipeline": {
-						"referenceName": "ZChildpipeline_backup",
+						"referenceName": "Childpipeline1",
 						"type": "PipelineReference"
 					},
 					"waitOnCompletion": true
@@ -48,7 +48,7 @@
 				"type": "WebActivity",
 				"dependsOn": [
 					{
-						"activity": "Execute Pipeline1",
+						"activity": "Execute Pipeline Childpipeline1",
 						"dependencyConditions": [
 							"Failed"
 						]

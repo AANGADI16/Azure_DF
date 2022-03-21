@@ -213,7 +213,7 @@
 				"type": "DatabricksNotebook",
 				"dependsOn": [
 					{
-						"activity": "Set variable2",
+						"activity": "OldFileCopyChildpipeline2",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -233,6 +233,26 @@
 				"linkedServiceName": {
 					"referenceName": "Databrickslsjlr",
 					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "OldFileCopyChildpipeline2",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Set variable2",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "OldFileCopyChildpipeline2",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true
 				}
 			}
 		],
